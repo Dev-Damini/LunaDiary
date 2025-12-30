@@ -1,0 +1,835 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="theme-color" content="#E91E63"/>
+    <meta name="description" content="LunaDiary - Your beautiful period tracker. Track cycles, symptoms, and insights with an elegant, feminine interface."/>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="LunaDiary - Period Tracker"/>
+    <meta property="og:description" content="Your beautiful period tracker. Track cycles, symptoms, and insights with an elegant, feminine interface."/>
+    <meta property="og:url" content="https://www.onspace.ai"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="OnSpace.AI"/>
+    <meta property="og:image" content="https://cdn-ai.onspace.ai/onspace/project/screenshot/online/pre-site/9b4exd.jpg"/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="630"/>
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="LunaDiary - Period Tracker"/>
+    <meta name="twitter:description" content="Your beautiful period tracker. Track cycles, symptoms, and insights with an elegant, feminine interface."/>
+    <meta name="twitter:image" content="https://cdn-ai.onspace.ai/onspace/project/screenshot/online/pre-site/9b4exd.jpg"/>
+    <meta name="twitter:url" content="https://www.onspace.ai"/>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <meta name="apple-mobile-web-app-title" content="LunaDiary"/>
+    
+    <title>LunaDiary - Period Tracker</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    
+    <style>
+        * {
+            font-family: 'Quicksand', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(233, 30, 99, 0.1);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.4s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .cycle-circle {
+            position: relative;
+            width: 280px;
+            height: 280px;
+        }
+        
+        .cycle-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.15);
+        }
+        
+        .mode-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .mode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(233, 30, 99, 0.2);
+        }
+        
+        .mode-card.selected {
+            background: linear-gradient(135deg, #e91e63 0%, #ec407a 100%);
+            color: white;
+            border-color: #e91e63;
+        }
+        
+        .progress-dot {
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: #e91e63;
+            transform: scale(1.2);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'luna-pink': '#e91e63',
+                        'luna-purple': '#9c27b0',
+                        'luna-light': '#fce4ec',
+                        'luna-dark': '#880e4f',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkx1bmFEaWFyeSAtIFBlcmlvZCBUcmFja2VyIiwKICAic2hvcnRfbmFtZSI6ICJMdW5hRGlhcnkiLAogICJkZXNjcmlwdGlvbiI6ICJZb3VyIGJlYXV0aWZ1bCBwZXJpb2QgdHJhY2tlci4gVHJhY2sgY3ljbGVzLCBzeW1wdG9tcywgYW5kIGluc2lnaHRzLiIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmNlNGVjIiwKICAidGhlbWVfY29sb3IiOiAiI2U5MWU2MyIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lnZG1sbGQwSnZlRDBpTUNBd0lERXlPQ0F4TWpnaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BHUmxabk0rUEd4cGJtVmhja2R5WVdScFpXNTBJR2xrUFNKbmNtRmtJaUI0TVQwaU1DVWlJSGt4UFNJd0pTSWdlREk5SWpBbElpQjVNajBpTVRBd0pTSStQSE4wYjNBZ2IyWm1jMlYwUFNJd0pTSWdjM1I1YkdVOUluTjBiM0F0WTI5c2IzSTZJMlZoTVdVMll6dHpkRzl3TFc5d1lXTnBkSGs2TUM0NElpOCtQSE4wYjNBZ2IyWm1jMlYwUFNJeE1EQWxJaUJ6ZEhsc1pUMGljM1J2Y0MxamIyeHZjam9qWlRreE1tVTJNenAwZEc5d0xXOXdZV05wZEhrNk1TSXZQand2YkdsdVpXRnlSM0poWkdsbGJuUStQQzlrWldaelBqeGphWEpqYkdVZ1kzZzlJalk0SWlCamVUMGlOamdpSUhJOUlqSTRJaUJtYVd4c1BTSjFjbXdvSTJkeVlXUXBJaTgrUEhCaGRHZ2daRDBpVFRZNElETTRJR2d5TUM0NElHTXhMalFnTUNBeUxqVWdNQzR4SURNdU5pQXhMalFnYkRFdU55QXhMamNnWXpFdU1TQXhMakVnTVM0M0lERXVOeUF4TGpjZ01pNDRJREFnTVM0MklERXVOQ0F5TGpnZ01pNDRJREV1TkNCamRqSTBMalFnWXkwd0xqUWdNUzR4TFRFdU5DQXlMVEV1T0NBeUxqZ2dNQzR4SURBdU9TMHdMalFnTVM0NExURXVOQ0F5TGpndE1pNDRJREF1TkMweExqWXRNUzQwTFRJdU9DMHlMamdnZGkweU5DNDBJR010TUM0MUxURXVOUzB4TGpndE1pNDRMVE11TmkweUxqZ2dNQzB3TGpjZ01DMHhMalVnTUMweUxqSWdNQzB3TGpjZ01DMHhMalFnTUMweUxqSWdNaTR6TFRFdU55QXlMak10TVRjdU5pQXhNQzQzTFRFM0xqWWdNUzR3TGpNZ01TNHdMamNnTXk0eElERXVORU1pSUdacGJHdzlJaU5tWm1ZaUx6NDhjR0YwYUNCa1BTSk5OVGdnTnpKb05pNDBZekV1TlNBd0lESXVOeUF4TGpJZ015NDJNQ0F6TGpZZ01pNHhJREF1T1NBeExqVWdNUzQySURNdU5qQWdNeTQySURFdU5TQXdJREV1TnlBeExqSWdNeTR6TFRNdU5DQXpMak10T1M0eklERXdMak10T1M0eklEZ3VPQ0F3SURFdU5pMHdMamNnTXk0eExURXVORU1pSUdacGJHdzlJaU5tTm1NellXWTRJaTgrUEhCaGRHZ2daRDBpVFRZNElEZ3lZekFnTXk0MElESTNMalVnTkNBeU56NDBNQ0F0TXk0MElESXRNaTQySURJdE55QXlMVEV3TGpNZ01DMHhNeTQzTFRJdU5pMHlOaTB5TGpNZ01pQXhMamNnTWk0eklESXVPU0F6TGpRZ01pNDVJRE0wSURNdU5DQXhOQ0F3SURJdU55MHdMall6SURJdU9UMGlJR1pwYkd3OUlpTmlabU14WkRBaUx6NDhjR0YwYUNCa1BTSk5PVEFnTVRBd0xqVWdZekV1TlNBd0lETXRNUzQxSURNdE15QTBMalVnTUNBeElERXVOU0F4TGpVZ015QXpJRE1nTXk0eUlEQWdOQzQxTFRFdU5TQXpMVE1nTXkweUxqSWdNQzB6TFRFdU5TMHpMVE10TVM0MUxUTXRNeTB6SURBdE1TMDFMakFnTUMwMUlEQWdNeTB3TGpJZ01pNHpMVEF1T1NBMExqVWdNaTB3TGpjZ01DMHhMalFnTUM0ekxUSWdNQzB6TGpNZ01pMDBMalVnTWkweUxqSWdNQzB6SURFdU5TMHpJRE10TXkwMExqVWdNQzB4TFRFdU5TMHhMalV0TXkwd0xqTXRNaTB3TGpRZ01pNDBMVEV1TXkwMExqVWdNQzB4TFRFdU5TMHhMalV0TXkwd0xqTXRNaTB3TGpRZ01pMDBMalV0TVM0eklEQXRNeTR6TFRFdU5TMHpMVE10TXkwd0xqYzNMVEV1TXkwd0xqVXRNaTB5TGpJZ01DMDBJRFV0TkNBMUxUUWdOQzQxSURBZ01TQXhMalVnTXlBeklETWdNeTB3TGpNZ01pQXdMalFnTkM0MUlERWdNaTR5SURBZ015QXhMalVnTXlBeklETWdNUzQxSURBZ015MHhMalVnTXkwekkwc2lJR1pwYkd3OUlpTm1abVl6WkdZNElpOCtQQzl6ZG1jKyIsCiAgICAgICJzaXplcyI6ICIxMjh4MTI4IiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0="/>
+    
+</head>
+<body class="select-none">
+    
+    <!-- Onboarding Flow -->
+    <div id="onboardingFlow" class="min-h-screen flex items-center justify-center p-4">
+        
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="max-w-md w-full fade-in">
+            <div class="glass-card rounded-3xl p-8 text-center">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-luna-pink to-luna-purple flex items-center justify-center">
+                    <i class="fas fa-heart text-white text-4xl"></i>
+                </div>
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-luna-pink to-luna-purple bg-clip-text text-transparent mb-4">Hi Girlie! 💖</h1>
+                <p class="text-gray-600 mb-8 text-lg leading-relaxed">Welcome to LunaDiary, your personal cycle companion. Let&#39;s get to know you better!</p>
+                <button onclick="showNameScreen()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Let&#39;s Start <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Name Screen -->
+        <div id="nameScreen" class="max-w-md w-full hidden">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex justify-center mb-6">
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1"></div>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">What&#39;s your name?</h2>
+                <p class="text-gray-600 mb-8">We&#39;d love to know what to call you! 💕</p>
+                
+                <input type="text" id="userName" placeholder="Enter your name" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none text-lg mb-6"/>
+                
+                <button onclick="showHealthScreen()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Continue <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Health Info Screen -->
+        <div id="healthScreen" class="max-w-md w-full hidden">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex justify-center mb-6">
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1"></div>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Health Info</h2>
+                <p class="text-gray-600 mb-8">Help us personalize your experience</p>
+                
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Height (cm)</label>
+                        <input type="number" id="userHeight" placeholder="165" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Weight (kg)</label>
+                        <input type="number" id="userWeight" placeholder="60" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                    </div>
+                </div>
+                
+                <button onclick="showLastPeriodScreen()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Continue <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Last Period Screen -->
+        <div id="lastPeriodScreen" class="max-w-md w-full hidden">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex justify-center mb-6">
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1"></div>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Last Period</h2>
+                <p class="text-gray-600 mb-8">When did your last period start?</p>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Start Date</label>
+                    <input type="date" id="lastPeriodDate" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none text-lg"/>
+                </div>
+                
+                <button onclick="showModeScreen()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Continue <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mode Selection Screen -->
+        <div id="modeScreen" class="max-w-md w-full hidden">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex justify-center mb-6">
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                    <div class="progress-dot w-3 h-3 rounded-full bg-gray-300 mx-1 active"></div>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Choose Your Mode</h2>
+                <p class="text-gray-600 mb-8 text-center">Loved and trusted by over 100 million globally</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="mode-card glass-card rounded-2xl p-6 text-center border-2 border-pink-200" onclick="selectMode(&#39;period&#39;)">
+                        <i class="fas fa-calendar-alt text-3xl text-luna-pink mb-3"></i>
+                        <p class="font-semibold text-gray-800">Period tracking</p>
+                    </div>
+                    
+                    <div class="mode-card glass-card rounded-2xl p-6 text-center border-2 border-pink-200" onclick="selectMode(&#39;conceive&#39;)">
+                        <i class="fas fa-baby text-3xl text-luna-purple mb-3"></i>
+                        <p class="font-semibold text-gray-800">Conceive</p>
+                    </div>
+                    
+                    <div class="mode-card glass-card rounded-2xl p-6 text-center border-2 border-pink-200" onclick="selectMode(&#39;pregnancy&#39;)">
+                        <i class="fas fa-heart text-3xl text-pink-400 mb-3"></i>
+                        <p class="font-semibold text-gray-800">Pregnancy</p>
+                    </div>
+                    
+                    <div class="mode-card glass-card rounded-2xl p-6 text-center border-2 border-pink-200" onclick="selectMode(&#39;perimenopause&#39;)">
+                        <i class="fas fa-leaf text-3xl text-purple-400 mb-3"></i>
+                        <p class="font-semibold text-gray-800">Perimenopause</p>
+                    </div>
+                </div>
+                
+                <button id="startAppBtn" onclick="completeOnboarding()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition opacity-50" disabled="">
+                    Start Tracking <i class="fas fa-check ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Main App -->
+    <div id="mainApp" class="hidden max-w-lg mx-auto min-h-screen pb-20">
+        
+        <!-- Header -->
+        <header class="glass-card rounded-b-3xl p-6 mb-6 sticky top-0 z-50">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Hi, <span id="displayName" class="text-luna-pink">There</span>! 💕</h1>
+                    <p class="text-sm text-gray-600 mt-1">How are you feeling today?</p>
+                </div>
+                <button id="menuBtn" class="text-2xl text-luna-pink hover:scale-110 transition">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Circular Cycle Tracker -->
+        <div class="mx-4 mb-6">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex justify-center mb-6">
+                    <div class="cycle-circle">
+                        <svg class="w-full h-full cycle-ring" viewBox="0 0 100 100">
+                            <!-- Background circle -->
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#f0f0f0" stroke-width="12"></circle>
+                            
+                            <!-- Period phase (red) -->
+                            <circle id="periodPhase" cx="50" cy="50" r="40" fill="none" stroke="url(#gradientPeriod)" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="188.4" stroke-linecap="round"></circle>
+                            
+                            <!-- Fertile phase (teal) -->
+                            <circle id="fertilePhase" cx="50" cy="50" r="40" fill="none" stroke="url(#gradientFertile)" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="125.6" stroke-linecap="round"></circle>
+                            
+                            <!-- Luteal phase (purple) -->
+                            <circle id="lutealPhase" cx="50" cy="50" r="40" fill="none" stroke="url(#gradientLuteal)" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round"></circle>
+                            
+                            <!-- Gradients -->
+                            <defs>
+                                <linearGradient id="gradientPeriod" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#e91e63;stop-opacity:1"></stop>
+                                    <stop offset="100%" style="stop-color:#ec407a;stop-opacity:1"></stop>
+                                </linearGradient>
+                                <linearGradient id="gradientFertile" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#00bcd4;stop-opacity:1"></stop>
+                                    <stop offset="100%" style="stop-color:#26c6da;stop-opacity:1"></stop>
+                                </linearGradient>
+                                <linearGradient id="gradientLuteal" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#9c27b0;stop-opacity:1"></stop>
+                                    <stop offset="100%" style="stop-color:#ab47bc;stop-opacity:1"></stop>
+                                </linearGradient>
+                            </defs>
+                            
+                            <!-- Center content -->
+                            <text x="50" y="42" text-anchor="middle" class="text-xs fill-gray-600" font-size="4">Day</text>
+                            <text x="50" y="52" text-anchor="middle" class="text-2xl font-bold fill-gray-800" font-size="12" id="currentCycleDay">28</text>
+                        </svg>
+                        
+                        <!-- Droplet icon -->
+                        <div class="absolute top-4 right-12">
+                            <i class="fas fa-tint text-luna-pink text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <p class="text-sm text-gray-600 mb-1" id="currentDayLabel">Wednesday, 24 Sep</p>
+                    <p class="text-2xl font-bold text-gray-800 mb-2" id="nextPeriodText">2 days until your next period</p>
+                    <button class="text-luna-pink text-sm font-semibold hover:underline" onclick="togglePMSInfo()">
+                        About your PMS <i class="fas fa-chevron-down ml-1"></i>
+                    </button>
+                </div>
+                
+                <!-- PMS Info (collapsible) -->
+                <div id="pmsInfo" class="hidden bg-pink-50 rounded-2xl p-4 mb-4">
+                    <h4 class="font-semibold text-gray-800 mb-2">PMS Symptoms to Watch For:</h4>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Mood changes &amp; irritability</li>
+                        <li>• Breast tenderness</li>
+                        <li>• Food cravings</li>
+                        <li>• Fatigue &amp; sleep changes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hormone Chart -->
+        <div class="mx-4 mb-6">
+            <div class="glass-card rounded-3xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4 text-lg">Plan in sync with your hormones</h3>
+                
+                <!-- Calendar Preview -->
+                <div class="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-3">
+                        <p class="text-sm font-semibold text-gray-800">Calendar</p>
+                        <i class="fas fa-tint text-luna-pink"></i>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs mb-2">
+                        <div class="text-gray-500 font-semibold">M</div>
+                        <div class="text-gray-500 font-semibold">Tu</div>
+                        <div class="text-gray-500 font-semibold">W</div>
+                        <div class="text-gray-500 font-semibold">Th</div>
+                        <div class="text-gray-500 font-semibold">F</div>
+                        <div class="text-gray-500 font-semibold">Sa</div>
+                        <div class="text-gray-500 font-semibold">Su</div>
+                    </div>
+                    
+                    <div id="miniCalendar" class="grid grid-cols-7 gap-1 text-center text-sm">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Hormone Graph -->
+                <div class="bg-gradient-to-r from-pink-50 via-purple-50 to-teal-50 rounded-2xl p-4 relative" style="height: 180px;">
+                    <canvas id="hormoneChart" class="w-full h-full"></canvas>
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
+                        <p class="text-sm font-semibold text-gray-800" id="phaseDescription">It&#39;s your mid luteal phase</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="mx-4 mb-6">
+            <div class="glass-card rounded-3xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">Quick Log</h3>
+                
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="logPeriod()" class="p-4 rounded-2xl bg-gradient-to-br from-pink-100 to-pink-200 hover:shadow-lg transition">
+                        <i class="fas fa-tint text-luna-pink text-2xl mb-2"></i>
+                        <p class="text-xs font-semibold text-gray-700">Period</p>
+                    </button>
+                    
+                    <button onclick="logSymptom()" class="p-4 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 hover:shadow-lg transition">
+                        <i class="fas fa-bolt text-luna-purple text-2xl mb-2"></i>
+                        <p class="text-xs font-semibold text-gray-700">Symptoms</p>
+                    </button>
+                    
+                    <button onclick="logMood()" class="p-4 rounded-2xl bg-gradient-to-br from-yellow-100 to-yellow-200 hover:shadow-lg transition">
+                        <i class="fas fa-smile text-yellow-600 text-2xl mb-2"></i>
+                        <p class="text-xs font-semibold text-gray-700">Mood</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Insights -->
+        <div class="mx-4 mb-6">
+            <div class="glass-card rounded-3xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>Today&#39;s Tip
+                </h3>
+                <p class="text-sm text-gray-700 leading-relaxed">During your luteal phase, focus on self-care activities. Light exercise like yoga can help manage PMS symptoms. Stay hydrated and get plenty of rest! 💕</p>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Menu Modal -->
+    <div id="menuModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
+        <div class="glass-card w-full max-w-lg mx-auto rounded-t-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Settings</h2>
+                <button id="closeMenu" class="text-gray-600 hover:text-luna-pink text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <button onclick="changeMode()" class="w-full p-4 bg-pink-50 rounded-2xl text-left hover:bg-pink-100 transition">
+                    <i class="fas fa-exchange-alt text-luna-pink mr-3"></i>
+                    <span class="font-semibold text-gray-800">Change Mode</span>
+                </button>
+                
+                <button onclick="editProfile()" class="w-full p-4 bg-purple-50 rounded-2xl text-left hover:bg-purple-100 transition">
+                    <i class="fas fa-user-edit text-luna-purple mr-3"></i>
+                    <span class="font-semibold text-gray-800">Edit Profile</span>
+                </button>
+                
+                <button onclick="clearData()" class="w-full p-4 bg-red-50 rounded-2xl text-left hover:bg-red-100 transition">
+                    <i class="fas fa-trash text-red-500 mr-3"></i>
+                    <span class="font-semibold text-gray-800">Clear All Data</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // App State
+        let userData = JSON.parse(localStorage.getItem('userData')) || null;
+        let selectedMode = localStorage.getItem('selectedMode') || null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (userData && selectedMode) {
+                showMainApp();
+            } else {
+                document.getElementById('onboardingFlow').classList.remove('hidden');
+            }
+        });
+        
+        // Onboarding Functions
+        function showNameScreen() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('nameScreen').classList.remove('hidden');
+            document.getElementById('nameScreen').classList.add('slide-in-right');
+        }
+        
+        function showHealthScreen() {
+            const name = document.getElementById('userName').value.trim();
+            if (!name) {
+                alert('Please enter your name 💕');
+                return;
+            }
+            
+            if (!userData) userData = {};
+            userData.name = name;
+            
+            document.getElementById('nameScreen').classList.add('hidden');
+            document.getElementById('healthScreen').classList.remove('hidden');
+            document.getElementById('healthScreen').classList.add('slide-in-right');
+        }
+        
+        function showLastPeriodScreen() {
+            const height = document.getElementById('userHeight').value;
+            const weight = document.getElementById('userWeight').value;
+            
+            if (!height || !weight) {
+                alert('Please fill in all fields 💕');
+                return;
+            }
+            
+            userData.height = height;
+            userData.weight = weight;
+            
+            document.getElementById('healthScreen').classList.add('hidden');
+            document.getElementById('lastPeriodScreen').classList.remove('hidden');
+            document.getElementById('lastPeriodScreen').classList.add('slide-in-right');
+            
+            // Set default date to today
+            document.getElementById('lastPeriodDate').valueAsDate = new Date();
+        }
+        
+        function showModeScreen() {
+            const lastPeriod = document.getElementById('lastPeriodDate').value;
+            
+            if (!lastPeriod) {
+                alert('Please select your last period start date 💕');
+                return;
+            }
+            
+            userData.lastPeriodStart = lastPeriod;
+            
+            document.getElementById('lastPeriodScreen').classList.add('hidden');
+            document.getElementById('modeScreen').classList.remove('hidden');
+            document.getElementById('modeScreen').classList.add('slide-in-right');
+        }
+        
+        function selectMode(mode) {
+            selectedMode = mode;
+            
+            // Update UI
+            document.querySelectorAll('.mode-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Enable start button
+            const startBtn = document.getElementById('startAppBtn');
+            startBtn.disabled = false;
+            startBtn.classList.remove('opacity-50');
+        }
+        
+        function completeOnboarding() {
+            if (!selectedMode) {
+                alert('Please select a mode 💕');
+                return;
+            }
+            
+            // Save data
+            localStorage.setItem('userData', JSON.stringify(userData));
+            localStorage.setItem('selectedMode', selectedMode);
+            
+            // Show main app
+            showMainApp();
+        }
+        
+        function showMainApp() {
+            document.getElementById('onboardingFlow').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            // Load user data
+            if (userData) {
+                document.getElementById('displayName').textContent = userData.name;
+                updateCycleInfo();
+                renderMiniCalendar();
+                drawHormoneChart();
+            }
+        }
+        
+        // Calculate cycle info
+        function updateCycleInfo() {
+            if (!userData.lastPeriodStart) return;
+            
+            const lastPeriod = new Date(userData.lastPeriodStart);
+            const today = new Date();
+            const daysDiff = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+            const cycleLength = 28;
+            const currentCycleDay = (daysDiff % cycleLength) + 1;
+            
+            // Update day display
+            document.getElementById('currentCycleDay').textContent = currentCycleDay;
+            
+            // Update date label
+            const options = { weekday: 'long', day: 'numeric', month: 'short' };
+            document.getElementById('currentDayLabel').textContent = today.toLocaleDateString('en-US', options);
+            
+            // Calculate days until next period
+            const daysUntilNext = cycleLength - currentCycleDay + 1;
+            if (daysUntilNext === 0 || daysUntilNext === cycleLength) {
+                document.getElementById('nextPeriodText').textContent = 'Your period might start today';
+            } else {
+                document.getElementById('nextPeriodText').textContent = `${daysUntilNext} days until your next period`;
+            }
+            
+            // Update phase description
+            let phase = '';
+            if (currentCycleDay <= 5) {
+                phase = 'It\'s your menstrual phase';
+            } else if (currentCycleDay <= 13) {
+                phase = 'It\'s your follicular phase';
+            } else if (currentCycleDay <= 16) {
+                phase = 'It\'s your ovulation phase';
+            } else {
+                phase = 'It\'s your luteal phase';
+            }
+            document.getElementById('phaseDescription').textContent = phase;
+            
+            // Update cycle ring
+            updateCycleRing(currentCycleDay);
+        }
+        
+        function updateCycleRing(day) {
+            const circumference = 251.2;
+            const periodDays = 5;
+            const fertileDays = 6;
+            const lutealDays = 12;
+            
+            // Calculate offsets for each phase
+            const periodOffset = circumference - (circumference * (periodDays / 28));
+            const fertileOffset = circumference - (circumference * ((periodDays + 7) / 28));
+            const lutealOffset = circumference - (circumference * ((periodDays + 7 + fertileDays) / 28));
+            
+            document.getElementById('periodPhase').style.strokeDashoffset = periodOffset;
+            document.getElementById('fertilePhase').style.strokeDashoffset = fertileOffset;
+            document.getElementById('lutealPhase').style.strokeDashoffset = lutealOffset;
+        }
+        
+        // Mini calendar
+        function renderMiniCalendar() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const calendar = document.getElementById('miniCalendar');
+            calendar.innerHTML = '';
+            
+            // Add empty cells
+            for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+                const empty = document.createElement('div');
+                calendar.appendChild(empty);
+            }
+            
+            // Add days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'py-1 rounded-lg';
+                dayEl.textContent = day;
+                
+                // Highlight today
+                if (day === today.getDate()) {
+                    dayEl.className += ' bg-white font-bold';
+                }
+                
+                // Mark period days (example)
+                if (userData.lastPeriodStart) {
+                    const lastPeriod = new Date(userData.lastPeriodStart);
+                    const currentDate = new Date(year, month, day);
+                    const daysDiff = Math.floor((currentDate - lastPeriod) / (1000 * 60 * 60 * 24));
+                    const cycleDay = (daysDiff % 28) + 1;
+                    
+                    if (cycleDay >= 1 && cycleDay <= 5) {
+                        dayEl.className += ' bg-gradient-to-br from-pink-400 to-pink-500 text-white font-semibold';
+                    } else if (cycleDay >= 9 && cycleDay <= 15) {
+                        dayEl.className += ' bg-gradient-to-br from-teal-400 to-teal-500 text-white font-semibold';
+                    }
+                }
+                
+                calendar.appendChild(dayEl);
+            }
+        }
+        
+        // Hormone Chart
+        function drawHormoneChart() {
+            const canvas = document.getElementById('hormoneChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 20;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw hormone curves
+            const points = 28;
+            const stepX = (width - 2 * padding) / points;
+            
+            // Estrogen curve (pink)
+            ctx.beginPath();
+            ctx.strokeStyle = '#ec407a';
+            ctx.lineWidth = 3;
+            for (let i = 0; i <= points; i++) {
+                const x = padding + i * stepX;
+                const y = height - padding - Math.sin(i * Math.PI / 14) * (height - 2 * padding) * 0.6;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Progesterone curve (purple)
+            ctx.beginPath();
+            ctx.strokeStyle = '#ab47bc';
+            ctx.lineWidth = 3;
+            for (let i = 0; i <= points; i++) {
+                const x = padding + i * stepX;
+                const shift = i > 14 ? (i - 14) : 0;
+                const y = height - padding - (shift / 14) * (height - 2 * padding) * 0.5;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // LH curve (teal)
+            ctx.beginPath();
+            ctx.strokeStyle = '#26c6da';
+            ctx.lineWidth = 3;
+            for (let i = 0; i <= points; i++) {
+                const x = padding + i * stepX;
+                const peak = i === 14 ? 1 : Math.exp(-Math.pow(i - 14, 2) / 8);
+                const y = height - padding - peak * (height - 2 * padding) * 0.7;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Current day marker
+            if (userData && userData.lastPeriodStart) {
+                const today = new Date();
+                const lastPeriod = new Date(userData.lastPeriodStart);
+                const daysDiff = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+                const currentCycleDay = (daysDiff % 28);
+                
+                const markerX = padding + currentCycleDay * stepX;
+                
+                ctx.beginPath();
+                ctx.strokeStyle = '#5c6bc0';
+                ctx.lineWidth = 2;
+                ctx.moveTo(markerX, padding);
+                ctx.lineTo(markerX, height - padding);
+                ctx.stroke();
+                
+                // Marker dot
+                ctx.beginPath();
+                ctx.fillStyle = '#5c6bc0';
+                ctx.arc(markerX, padding / 2, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+        
+        // Quick actions
+        function logPeriod() {
+            const today = new Date().toISOString().split('T')[0];
+            userData.lastPeriodStart = today;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            updateCycleInfo();
+            renderMiniCalendar();
+            alert('Period logged! 💕');
+        }
+        
+        function logSymptom() {
+            const symptoms = ['Cramps', 'Headache', 'Bloating', 'Fatigue', 'Mood swings', 'Breast tenderness'];
+            const selected = prompt('Enter symptom number:\n' + symptoms.map((s, i) => `${i + 1}. ${s}`).join('\n'));
+            if (selected) {
+                alert(`${symptoms[selected - 1]} logged! 💕`);
+            }
+        }
+        
+        function logMood() {
+            const moods = ['😊 Great', '🙂 Good', '😐 Neutral', '😔 Sad', '😠 Angry'];
+            const selected = prompt('How are you feeling?\n' + moods.map((m, i) => `${i + 1}. ${m}`).join('\n'));
+            if (selected) {
+                alert('Mood logged! 💕');
+            }
+        }
+        
+        // Toggle PMS info
+        function togglePMSInfo() {
+            const info = document.getElementById('pmsInfo');
+            info.classList.toggle('hidden');
+        }
+        
+        // Menu functions
+        document.getElementById('menuBtn')?.addEventListener('click', () => {
+            document.getElementById('menuModal').classList.remove('hidden');
+        });
+        
+        document.getElementById('closeMenu')?.addEventListener('click', () => {
+            document.getElementById('menuModal').classList.add('hidden');
+        });
+        
+        function changeMode() {
+            if (confirm('Are you sure you want to change your tracking mode?')) {
+                localStorage.removeItem('selectedMode');
+                location.reload();
+            }
+        }
+        
+        function editProfile() {
+            alert('Profile editing coming soon! 💕');
+        }
+        
+        function clearData() {
+            if (confirm('Are you sure? This will delete all your data.')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+    
+
+
+</body></html>
