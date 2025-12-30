@@ -127,6 +127,28 @@
         .pulse {
             animation: pulse 2s infinite;
         }
+        
+        .nav-btn {
+            color: #9e9e9e;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn.active {
+            color: #e91e63;
+        }
+        
+        .diary-mood.selected, .detailed-mood.selected {
+            background: linear-gradient(135deg, #e91e63 0%, #ec407a 100%);
+            border-color: #e91e63;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .feeling-tag.selected {
+            background: linear-gradient(135deg, #e91e63 0%, #ec407a 100%);
+            border-color: #e91e63;
+            color: white;
+        }
     </style>
     
     <script>
@@ -254,7 +276,7 @@
                 </div>
                 
                 <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Choose Your Mode</h2>
-                <p class="text-gray-600 mb-8 text-center">Loved and trusted by over 100 million globally</p>
+                <p class="text-gray-600 mb-8 text-center">Currently evolving to millions of users worldwide</p>
                 
                 <div class="grid grid-cols-2 gap-4 mb-8">
                     <div class="mode-card glass-card rounded-2xl p-6 text-center border-2 border-pink-200" onclick="selectMode(&#39;period&#39;)">
@@ -309,16 +331,16 @@
                     <div class="cycle-circle">
                         <svg class="w-full h-full cycle-ring" viewBox="0 0 100 100">
                             <!-- Background circle -->
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="#f0f0f0" stroke-width="12"></circle>
+                            <circle cx="50" cy="50" r="42" fill="none" stroke="#f0f0f0" stroke-width="6"></circle>
                             
                             <!-- Period phase (red) -->
-                            <circle id="periodPhase" cx="50" cy="50" r="40" fill="none" stroke="url(#gradientPeriod)" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="188.4" stroke-linecap="round"></circle>
+                            <circle id="periodPhase" cx="50" cy="50" r="42" fill="none" stroke="url(#gradientPeriod)" stroke-width="6" stroke-dasharray="263.89" stroke-dashoffset="198" stroke-linecap="round"></circle>
                             
-                            <!-- Fertile phase (teal) -->
-                            <circle id="fertilePhase" cx="50" cy="50" r="40" fill="none" stroke="url(#gradientFertile)" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="125.6" stroke-linecap="round"></circle>
+                            <!-- Fertile phase (teal/blue) -->
+                            <circle id="fertilePhase" cx="50" cy="50" r="42" fill="none" stroke="url(#gradientFertile)" stroke-width="6" stroke-dasharray="263.89" stroke-dashoffset="132" stroke-linecap="round"></circle>
                             
-                            <!-- Luteal phase (purple) -->
-                            <circle id="lutealPhase" cx="50" cy="50" r="40" fill="none" stroke="url(#gradientLuteal)" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round"></circle>
+                            <!-- Luteal phase (light gray) -->
+                            <circle id="lutealPhase" cx="50" cy="50" r="42" fill="none" stroke="#e0e0e0" stroke-width="6" stroke-dasharray="263.89" stroke-dashoffset="66" stroke-linecap="round"></circle>
                             
                             <!-- Gradients -->
                             <defs>
@@ -442,6 +464,223 @@
         
     </div>
     
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto glass-card rounded-t-3xl px-6 py-4 flex justify-around items-center z-40">
+        <button onclick="showSection(&#39;home&#39;)" class="nav-btn flex flex-col items-center">
+            <i class="fas fa-home text-xl mb-1"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button onclick="showSection(&#39;insights&#39;)" class="nav-btn flex flex-col items-center">
+            <i class="fas fa-chart-line text-xl mb-1"></i>
+            <span class="text-xs">Insights</span>
+        </button>
+        <button onclick="showSection(&#39;diary&#39;)" class="nav-btn flex flex-col items-center">
+            <i class="fas fa-book text-xl mb-1"></i>
+            <span class="text-xs">Diary</span>
+        </button>
+        <button onclick="showSection(&#39;advice&#39;)" class="nav-btn flex flex-col items-center">
+            <i class="fas fa-heart text-xl mb-1"></i>
+            <span class="text-xs">Advice</span>
+        </button>
+        <button onclick="showSection(&#39;assistant&#39;)" class="nav-btn flex flex-col items-center">
+            <i class="fas fa-robot text-xl mb-1"></i>
+            <span class="text-xs">Assistant</span>
+        </button>
+    </nav>
+    
+    <!-- Insights Page -->
+    <div id="insightsPage" class="hidden max-w-lg mx-auto min-h-screen pb-24">
+        <header class="glass-card rounded-b-3xl p-6 mb-6 sticky top-0 z-50">
+            <h1 class="text-3xl font-bold text-center" style="color: #c62828; font-style: italic;">See trends<br/><span class="text-4xl">across symptoms</span></h1>
+        </header>
+        
+        <div class="mx-4 mb-6">
+            <div class="glass-card rounded-3xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">Analysis</h3>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Insights</h2>
+                
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer" onclick="showSymptomDetail(&#39;cramps&#39;)">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center mr-4">
+                                <i class="fas fa-hand-holding-medical text-white text-xl"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Cramps</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer" onclick="showSymptomDetail(&#39;feelings&#39;)">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center mr-4">
+                                <i class="fas fa-smile text-white text-xl"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Feelings</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer" onclick="showSymptomDetail(&#39;sleep&#39;)">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-xl bg-orange-600 flex items-center justify-center mr-4">
+                                <i class="fas fa-moon text-white text-xl"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Sleep</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer" onclick="showSymptomDetail(&#39;energy&#39;)">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center mr-4">
+                                <i class="fas fa-bolt text-white text-xl"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Energy</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Symptom Chart -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm">
+                    <canvas id="symptomChart" class="w-full" style="height: 250px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Diary Page -->
+    <div id="diaryPage" class="hidden max-w-lg mx-auto min-h-screen pb-24">
+        <header class="glass-card rounded-b-3xl p-6 mb-6 sticky top-0 z-50">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-luna-pink to-luna-purple bg-clip-text text-transparent">Personal Diary</h1>
+                <button onclick="showNewDiaryEntry()" class="bg-gradient-to-r from-luna-pink to-luna-purple text-white w-12 h-12 rounded-full flex items-center justify-center hover:shadow-lg transition">
+                    <i class="fas fa-plus text-xl"></i>
+                </button>
+            </div>
+        </header>
+        
+        <div id="diaryEntries" class="mx-4 space-y-4">
+            <!-- Entries will be populated here -->
+        </div>
+    </div>
+    
+    <!-- AI Assistant Page -->
+    <div id="assistantPage" class="hidden max-w-lg mx-auto min-h-screen pb-24">
+        <header class="glass-card rounded-b-3xl p-6 mb-6 sticky top-0 z-50">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-luna-pink to-luna-purple bg-clip-text text-transparent">AI Assistant</h1>
+                    <p class="text-sm text-gray-600 mt-1">Your personal cycle companion</p>
+                </div>
+                <button onclick="showNameAssistant()" class="text-luna-pink hover:scale-110 transition">
+                    <i class="fas fa-edit text-xl"></i>
+                </button>
+            </div>
+        </header>
+        
+        <div class="mx-4 space-y-4">
+            <!-- Assistant Info Card -->
+            <div class="glass-card rounded-3xl p-6 text-center">
+                <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                    <i class="fas fa-robot text-white text-5xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Hi, I&#39;m <span id="assistantName" class="text-luna-pink">Luna</span>! 💜</h2>
+                <p class="text-sm text-gray-600">I&#39;ll help you stay on track with your cycle and wellness goals</p>
+            </div>
+            
+            <!-- Add Reminder Button -->
+            <button onclick="showAddReminder()" class="w-full glass-card rounded-3xl p-4 flex items-center justify-center hover:shadow-lg transition">
+                <i class="fas fa-plus-circle text-luna-pink text-2xl mr-3"></i>
+                <span class="font-semibold text-gray-800">Add New Reminder</span>
+            </button>
+            
+            <!-- Smart Suggestions -->
+            <div class="glass-card rounded-3xl p-6">
+                <h3 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                    Smart Suggestions
+                </h3>
+                <div id="smartSuggestions" class="space-y-3">
+                    <!-- Will be populated by JS -->
+                </div>
+            </div>
+            
+            <!-- Active Reminders -->
+            <div class="glass-card rounded-3xl p-6">
+                <h3 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-bell text-luna-pink mr-2"></i>
+                    Your Reminders
+                </h3>
+                <div id="remindersList" class="space-y-3">
+                    <!-- Will be populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Emotional Advice Page -->
+    <div id="advicePage" class="hidden max-w-lg mx-auto min-h-screen pb-24">
+        <header class="glass-card rounded-b-3xl p-6 mb-6 sticky top-0 z-50">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-luna-pink to-luna-purple bg-clip-text text-transparent text-center">Emotional Support 💖</h1>
+        </header>
+        
+        <div class="mx-4 space-y-4">
+            <div class="glass-card rounded-3xl p-6">
+                <div class="flex items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-pink-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-heart text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-2">Menstrual Phase (Days 1-5)</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">It&#39;s okay to rest. Your body is doing important work. Be gentle with yourself, stay warm, and honor your need for comfort. 💕</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-3xl p-6">
+                <div class="flex items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-seedling text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-2">Follicular Phase (Days 6-13)</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">This is your time to shine! Your energy is rising. Try new things, start projects, and embrace social connections. You&#39;ve got this! ✨</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-3xl p-6">
+                <div class="flex items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-star text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-2">Ovulation Phase (Days 14-16)</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">Peak energy time! You&#39;re at your most confident and communicative. Perfect for important conversations and taking on challenges. 🌟</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-3xl p-6">
+                <div class="flex items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-moon text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-2">Luteal Phase (Days 17-28)</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">Listen to your body. If you need to slow down, that&#39;s perfectly normal. Practice self-care, eat nourishing foods, and be kind to yourself. 🌙</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-3xl p-6 bg-gradient-to-br from-pink-100 to-purple-100">
+                <h3 class="font-bold text-gray-800 mb-3 text-center">Remember</h3>
+                <p class="text-sm text-gray-700 leading-relaxed text-center italic">Your cycle is your superpower. Understanding it helps you work with your body, not against it. You&#39;re amazing, and your feelings are valid. 💖</p>
+            </div>
+        </div>
+    </div>
+    
     <!-- Menu Modal -->
     <div id="menuModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
         <div class="glass-card w-full max-w-lg mx-auto rounded-t-3xl p-6">
@@ -458,7 +697,7 @@
                     <span class="font-semibold text-gray-800">Change Mode</span>
                 </button>
                 
-                <button onclick="editProfile()" class="w-full p-4 bg-purple-50 rounded-2xl text-left hover:bg-purple-100 transition">
+                <button onclick="showEditProfile()" class="w-full p-4 bg-purple-50 rounded-2xl text-left hover:bg-purple-100 transition">
                     <i class="fas fa-user-edit text-luna-purple mr-3"></i>
                     <span class="font-semibold text-gray-800">Edit Profile</span>
                 </button>
@@ -466,6 +705,229 @@
                 <button onclick="clearData()" class="w-full p-4 bg-red-50 rounded-2xl text-left hover:bg-red-100 transition">
                     <i class="fas fa-trash text-red-500 mr-3"></i>
                     <span class="font-semibold text-gray-800">Clear All Data</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Edit Profile</h2>
+                <button onclick="closeEditProfile()" class="text-gray-600 hover:text-luna-pink text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+                    <input type="text" id="editName" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Height (cm)</label>
+                    <input type="number" id="editHeight" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Weight (kg)</label>
+                    <input type="number" id="editWeight" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Last Period Start</label>
+                    <input type="date" id="editLastPeriod" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                </div>
+                
+                <button onclick="saveProfile()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Save Changes <i class="fas fa-check ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Name Assistant Modal -->
+    <div id="nameAssistantModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Name Your Assistant</h2>
+                <button onclick="closeNameAssistant()" class="text-gray-600 hover:text-luna-pink text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                    <i class="fas fa-robot text-white text-5xl"></i>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Assistant Name</label>
+                    <input type="text" id="assistantNameInput" placeholder="Luna, Lily, Rose..." class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                </div>
+                
+                <button onclick="saveAssistantName()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Save Name <i class="fas fa-check ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Reminder Modal -->
+    <div id="addReminderModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Add Reminder</h2>
+                <button onclick="closeAddReminder()" class="text-gray-600 hover:text-luna-pink text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Reminder Type</label>
+                    <select id="reminderType" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none">
+                        <option value="period">Period Start</option>
+                        <option value="ovulation">Ovulation Day</option>
+                        <option value="medication">Take Medication</option>
+                        <option value="symptom">Log Symptoms</option>
+                        <option value="water">Drink Water</option>
+                        <option value="exercise">Exercise</option>
+                        <option value="selfcare">Self-Care Time</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                
+                <div id="customReminderField" class="hidden">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Custom Reminder</label>
+                    <input type="text" id="customReminderText" placeholder="What would you like to be reminded of?" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Time</label>
+                    <input type="time" id="reminderTime" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none"/>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Frequency</label>
+                    <select id="reminderFrequency" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="cyclebased">Cycle-based</option>
+                    </select>
+                </div>
+                
+                <button onclick="saveReminder()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Add Reminder <i class="fas fa-bell ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- New Diary Entry Modal -->
+    <div id="newDiaryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">New Diary Entry</h2>
+                <button onclick="closeNewDiaryEntry()" class="text-gray-600 hover:text-luna-pink text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">How are you feeling today?</label>
+                    <div class="grid grid-cols-5 gap-2 mb-4">
+                        <button onclick="selectDiaryMood(&#39;amazing&#39;)" class="diary-mood p-3 rounded-xl bg-white hover:bg-pink-100 transition text-3xl" data-mood="amazing">😍</button>
+                        <button onclick="selectDiaryMood(&#39;happy&#39;)" class="diary-mood p-3 rounded-xl bg-white hover:bg-pink-100 transition text-3xl" data-mood="happy">😊</button>
+                        <button onclick="selectDiaryMood(&#39;neutral&#39;)" class="diary-mood p-3 rounded-xl bg-white hover:bg-pink-100 transition text-3xl" data-mood="neutral">😐</button>
+                        <button onclick="selectDiaryMood(&#39;sad&#39;)" class="diary-mood p-3 rounded-xl bg-white hover:bg-pink-100 transition text-3xl" data-mood="sad">😢</button>
+                        <button onclick="selectDiaryMood(&#39;angry&#39;)" class="diary-mood p-3 rounded-xl bg-white hover:bg-pink-100 transition text-3xl" data-mood="angry">😠</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">What&#39;s on your mind?</label>
+                    <textarea id="diaryContent" rows="6" class="input-field w-full p-4 rounded-2xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none resize-none" placeholder="Write your thoughts here..."></textarea>
+                </div>
+                
+                <button onclick="saveDiaryEntry()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Save Entry <i class="fas fa-heart ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Enhanced Mood Logging Modal -->
+    <div id="moodModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">How are you feeling?</h2>
+                <button onclick="closeMoodModal()" class="text-gray-600 hover:text-luna-pink text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Overall Mood</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="selectDetailedMood(&#39;amazing&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">😍</div>
+                            <div class="text-xs font-semibold">Amazing</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;happy&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">😊</div>
+                            <div class="text-xs font-semibold">Happy</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;good&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">🙂</div>
+                            <div class="text-xs font-semibold">Good</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;neutral&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">😐</div>
+                            <div class="text-xs font-semibold">Neutral</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;sad&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">😢</div>
+                            <div class="text-xs font-semibold">Sad</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;anxious&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">😰</div>
+                            <div class="text-xs font-semibold">Anxious</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;angry&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">😠</div>
+                            <div class="text-xs font-semibold">Angry</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;tired&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">😴</div>
+                            <div class="text-xs font-semibold">Tired</div>
+                        </button>
+                        <button onclick="selectDetailedMood(&#39;energetic&#39;)" class="detailed-mood p-4 rounded-2xl bg-white hover:bg-pink-100 transition border-2 border-pink-200">
+                            <div class="text-4xl mb-2">⚡</div>
+                            <div class="text-xs font-semibold">Energetic</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Any specific feelings?</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="toggleFeelingTag(this, &#39;stressed&#39;)" class="feeling-tag px-4 py-2 rounded-full bg-white border-2 border-pink-200 text-sm font-semibold hover:bg-pink-100 transition">Stressed</button>
+                        <button onclick="toggleFeelingTag(this, &#39;bloated&#39;)" class="feeling-tag px-4 py-2 rounded-full bg-white border-2 border-pink-200 text-sm font-semibold hover:bg-pink-100 transition">Bloated</button>
+                        <button onclick="toggleFeelingTag(this, &#39;confident&#39;)" class="feeling-tag px-4 py-2 rounded-full bg-white border-2 border-pink-200 text-sm font-semibold hover:bg-pink-100 transition">Confident</button>
+                        <button onclick="toggleFeelingTag(this, &#39;irritable&#39;)" class="feeling-tag px-4 py-2 rounded-full bg-white border-2 border-pink-200 text-sm font-semibold hover:bg-pink-100 transition">Irritable</button>
+                        <button onclick="toggleFeelingTag(this, &#39;calm&#39;)" class="feeling-tag px-4 py-2 rounded-full bg-white border-2 border-pink-200 text-sm font-semibold hover:bg-pink-100 transition">Calm</button>
+                        <button onclick="toggleFeelingTag(this, &#39;overwhelmed&#39;)" class="feeling-tag px-4 py-2 rounded-full bg-white border-2 border-pink-200 text-sm font-semibold hover:bg-pink-100 transition">Overwhelmed</button>
+                    </div>
+                </div>
+                
+                <button onclick="saveMoodLog()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition">
+                    Save Mood <i class="fas fa-check ml-2"></i>
                 </button>
             </div>
         </div>
@@ -627,7 +1089,7 @@
         }
         
         function updateCycleRing(day) {
-            const circumference = 251.2;
+            const circumference = 263.89; // 2 * PI * 42
             const periodDays = 5;
             const fertileDays = 6;
             const lutealDays = 12;
@@ -770,6 +1232,51 @@
             }
         }
         
+        // Section navigation
+        let currentSection = 'home';
+        let currentDiaryMood = null;
+        let selectedMood = null;
+        let selectedFeelings = [];
+        
+        // Initialize assistant name
+        if (!localStorage.getItem('assistantName')) {
+            localStorage.setItem('assistantName', 'Luna');
+        }
+        
+        function showSection(section) {
+            currentSection = section;
+            
+            // Hide all pages
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('insightsPage').classList.add('hidden');
+            document.getElementById('diaryPage').classList.add('hidden');
+            document.getElementById('advicePage').classList.add('hidden');
+            document.getElementById('assistantPage').classList.add('hidden');
+            
+            // Show selected page
+            if (section === 'home') {
+                document.getElementById('mainApp').classList.remove('hidden');
+            } else if (section === 'insights') {
+                document.getElementById('insightsPage').classList.remove('hidden');
+                loadInsightsData();
+                drawSymptomChart();
+            } else if (section === 'diary') {
+                document.getElementById('diaryPage').classList.remove('hidden');
+                loadDiaryEntries();
+            } else if (section === 'advice') {
+                document.getElementById('advicePage').classList.remove('hidden');
+            } else if (section === 'assistant') {
+                document.getElementById('assistantPage').classList.remove('hidden');
+                loadAssistantPage();
+            }
+            
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+        
         // Quick actions
         function logPeriod() {
             const today = new Date().toISOString().split('T')[0];
@@ -783,17 +1290,62 @@
         function logSymptom() {
             const symptoms = ['Cramps', 'Headache', 'Bloating', 'Fatigue', 'Mood swings', 'Breast tenderness'];
             const selected = prompt('Enter symptom number:\n' + symptoms.map((s, i) => `${i + 1}. ${s}`).join('\n'));
-            if (selected) {
+            if (selected && symptoms[selected - 1]) {
+                // Save symptom
+                if (!userData.symptoms) userData.symptoms = [];
+                userData.symptoms.push({
+                    date: new Date().toISOString(),
+                    symptom: symptoms[selected - 1]
+                });
+                localStorage.setItem('userData', JSON.stringify(userData));
                 alert(`${symptoms[selected - 1]} logged! 💕`);
             }
         }
         
         function logMood() {
-            const moods = ['😊 Great', '🙂 Good', '😐 Neutral', '😔 Sad', '😠 Angry'];
-            const selected = prompt('How are you feeling?\n' + moods.map((m, i) => `${i + 1}. ${m}`).join('\n'));
-            if (selected) {
-                alert('Mood logged! 💕');
+            document.getElementById('moodModal').classList.remove('hidden');
+        }
+        
+        function closeMoodModal() {
+            document.getElementById('moodModal').classList.add('hidden');
+            selectedMood = null;
+            selectedFeelings = [];
+            document.querySelectorAll('.detailed-mood').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.feeling-tag').forEach(btn => btn.classList.remove('selected'));
+        }
+        
+        function selectDetailedMood(mood) {
+            selectedMood = mood;
+            document.querySelectorAll('.detailed-mood').forEach(btn => btn.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+        
+        function toggleFeelingTag(element, feeling) {
+            element.classList.toggle('selected');
+            const index = selectedFeelings.indexOf(feeling);
+            if (index > -1) {
+                selectedFeelings.splice(index, 1);
+            } else {
+                selectedFeelings.push(feeling);
             }
+        }
+        
+        function saveMoodLog() {
+            if (!selectedMood) {
+                alert('Please select a mood! 💕');
+                return;
+            }
+            
+            if (!userData.moods) userData.moods = [];
+            userData.moods.push({
+                date: new Date().toISOString(),
+                mood: selectedMood,
+                feelings: [...selectedFeelings]
+            });
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            closeMoodModal();
+            alert('Mood logged! 💕');
         }
         
         // Toggle PMS info
@@ -818,14 +1370,471 @@
             }
         }
         
-        function editProfile() {
-            alert('Profile editing coming soon! 💕');
+        function showEditProfile() {
+            document.getElementById('menuModal').classList.add('hidden');
+            document.getElementById('editProfileModal').classList.remove('hidden');
+            
+            // Populate fields
+            if (userData) {
+                document.getElementById('editName').value = userData.name || '';
+                document.getElementById('editHeight').value = userData.height || '';
+                document.getElementById('editWeight').value = userData.weight || '';
+                document.getElementById('editLastPeriod').value = userData.lastPeriodStart || '';
+            }
+        }
+        
+        function closeEditProfile() {
+            document.getElementById('editProfileModal').classList.add('hidden');
+        }
+        
+        function saveProfile() {
+            const name = document.getElementById('editName').value.trim();
+            const height = document.getElementById('editHeight').value;
+            const weight = document.getElementById('editWeight').value;
+            const lastPeriod = document.getElementById('editLastPeriod').value;
+            
+            if (!name || !height || !weight || !lastPeriod) {
+                alert('Please fill in all fields! 💕');
+                return;
+            }
+            
+            userData.name = name;
+            userData.height = height;
+            userData.weight = weight;
+            userData.lastPeriodStart = lastPeriod;
+            
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            document.getElementById('displayName').textContent = name;
+            updateCycleInfo();
+            renderMiniCalendar();
+            
+            closeEditProfile();
+            alert('Profile updated! 💕');
+        }
+        
+        // Diary functions
+        function showNewDiaryEntry() {
+            document.getElementById('newDiaryModal').classList.remove('hidden');
+            document.getElementById('diaryContent').value = '';
+            currentDiaryMood = null;
+            document.querySelectorAll('.diary-mood').forEach(btn => btn.classList.remove('selected'));
+        }
+        
+        function closeNewDiaryEntry() {
+            document.getElementById('newDiaryModal').classList.add('hidden');
+        }
+        
+        function selectDiaryMood(mood) {
+            currentDiaryMood = mood;
+            document.querySelectorAll('.diary-mood').forEach(btn => btn.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+        
+        function saveDiaryEntry() {
+            const content = document.getElementById('diaryContent').value.trim();
+            
+            if (!content) {
+                alert('Please write something! 💕');
+                return;
+            }
+            
+            if (!userData.diaryEntries) userData.diaryEntries = [];
+            
+            const entry = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                mood: currentDiaryMood,
+                content: content
+            };
+            
+            userData.diaryEntries.unshift(entry);
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            closeNewDiaryEntry();
+            loadDiaryEntries();
+        }
+        
+        function loadDiaryEntries() {
+            const container = document.getElementById('diaryEntries');
+            
+            if (!userData.diaryEntries || userData.diaryEntries.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card rounded-3xl p-8 text-center">
+                        <i class="fas fa-book-open text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-600">No diary entries yet. Start writing! 💕</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = userData.diaryEntries.map(entry => {
+                const date = new Date(entry.date);
+                const moodEmojis = {
+                    amazing: '😍',
+                    happy: '😊',
+                    neutral: '😐',
+                    sad: '😢',
+                    angry: '😠'
+                };
+                
+                return `
+                    <div class="glass-card rounded-3xl p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center">
+                                <span class="text-3xl mr-3">${entry.mood ? moodEmojis[entry.mood] : '💭'}</span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+                                    <p class="text-xs text-gray-600">${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p>
+                                </div>
+                            </div>
+                            <button onclick="deleteDiaryEntry(${entry.id})" class="text-gray-400 hover:text-red-500 transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">${entry.content}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function deleteDiaryEntry(id) {
+            if (confirm('Delete this diary entry?')) {
+                userData.diaryEntries = userData.diaryEntries.filter(e => e.id !== id);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                loadDiaryEntries();
+            }
+        }
+        
+        // Load insights data
+        function loadInsightsData() {
+            // This function will be called when insights page is shown
+            // It updates the insights based on real tracked data
+        }
+        
+        // Symptom chart
+        function drawSymptomChart() {
+            const canvas = document.getElementById('symptomChart');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 250;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+            const barWidth = 30;
+            const maxValue = 6;
+            
+            // Get real data from tracked symptoms/moods or use sample data
+            let data = [];
+            let labels = [];
+            
+            if (userData && userData.moods && userData.moods.length > 0) {
+                // Group moods by month and count
+                const moodsByMonth = {};
+                userData.moods.forEach(mood => {
+                    const date = new Date(mood.date);
+                    const monthKey = `${date.toLocaleString('en-US', { month: 'short' })} ${date.getDate()}`;
+                    moodsByMonth[monthKey] = (moodsByMonth[monthKey] || 0) + 1;
+                });
+                
+                // Get last 12 entries
+                const entries = Object.entries(moodsByMonth).slice(-12);
+                data = entries.map(e => e[1]);
+                labels = entries.map(e => e[0]);
+            }
+            
+            // Fallback to sample data if no tracked data
+            if (data.length === 0) {
+                data = [2, 5, 5, 3, 5, 6, 4, 4, 4, 5, 4, 6];
+                labels = ['Apr 7', '05 May', '01 Jun', '28 Jun', '26 Jul', '22 Aug', '20 Sep', '15 Oct', '11 Nov', '08 Dec', '04 Jan', '30 Jan'];
+            }
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+            
+            // Draw Y-axis labels
+            ctx.fillStyle = '#9e9e9e';
+            ctx.font = '10px Quicksand';
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= maxValue; i++) {
+                const y = height - padding - (i / maxValue) * (height - 2 * padding);
+                ctx.fillText(i.toString(), padding - 5, y + 3);
+            }
+            
+            // Draw bars
+            const barSpacing = (width - 2 * padding) / data.length;
+            ctx.fillStyle = '#5c6bc0';
+            
+            data.forEach((value, index) => {
+                const barHeight = (value / maxValue) * (height - 2 * padding);
+                const x = padding + index * barSpacing + (barSpacing - barWidth) / 2;
+                const y = height - padding - barHeight;
+                
+                // Draw bar with rounded top
+                ctx.beginPath();
+                ctx.roundRect(x, y, barWidth, barHeight, [8, 8, 0, 0]);
+                ctx.fill();
+            });
+            
+            // Draw X-axis labels
+            ctx.fillStyle = '#9e9e9e';
+            ctx.font = '9px Quicksand';
+            ctx.textAlign = 'center';
+            labels.forEach((label, index) => {
+                const x = padding + index * barSpacing + barSpacing / 2;
+                const words = label.split(' ');
+                words.forEach((word, wordIndex) => {
+                    ctx.fillText(word, x, height - padding + 15 + wordIndex * 12);
+                });
+            });
+            
+            // Add "Total days" label
+            ctx.save();
+            ctx.translate(15, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = '#9e9e9e';
+            ctx.font = '10px Quicksand';
+            ctx.textAlign = 'center';
+            ctx.fillText('Total days', 0, 0);
+            ctx.restore();
+        }
+        
+        function showSymptomDetail(symptom) {
+            alert(`Viewing details for: ${symptom}\nDetailed tracking coming soon! 💕`);
         }
         
         function clearData() {
             if (confirm('Are you sure? This will delete all your data.')) {
                 localStorage.clear();
                 location.reload();
+            }
+        }
+        
+        // AI Assistant Functions
+        function loadAssistantPage() {
+            const assistantName = localStorage.getItem('assistantName') || 'Luna';
+            document.getElementById('assistantName').textContent = assistantName;
+            
+            loadSmartSuggestions();
+            loadReminders();
+        }
+        
+        function showNameAssistant() {
+            document.getElementById('nameAssistantModal').classList.remove('hidden');
+            document.getElementById('assistantNameInput').value = localStorage.getItem('assistantName') || 'Luna';
+        }
+        
+        function closeNameAssistant() {
+            document.getElementById('nameAssistantModal').classList.add('hidden');
+        }
+        
+        function saveAssistantName() {
+            const name = document.getElementById('assistantNameInput').value.trim();
+            if (!name) {
+                alert('Please enter a name! 💕');
+                return;
+            }
+            
+            localStorage.setItem('assistantName', name);
+            document.getElementById('assistantName').textContent = name;
+            closeNameAssistant();
+            alert(`Assistant renamed to ${name}! 💕`);
+        }
+        
+        function showAddReminder() {
+            document.getElementById('addReminderModal').classList.remove('hidden');
+            document.getElementById('reminderTime').value = '09:00';
+        }
+        
+        function closeAddReminder() {
+            document.getElementById('addReminderModal').classList.add('hidden');
+            document.getElementById('customReminderField').classList.add('hidden');
+        }
+        
+        // Show custom field when custom is selected
+        document.addEventListener('DOMContentLoaded', () => {
+            const reminderTypeSelect = document.getElementById('reminderType');
+            if (reminderTypeSelect) {
+                reminderTypeSelect.addEventListener('change', (e) => {
+                    const customField = document.getElementById('customReminderField');
+                    if (e.target.value === 'custom') {
+                        customField.classList.remove('hidden');
+                    } else {
+                        customField.classList.add('hidden');
+                    }
+                });
+            }
+        });
+        
+        function saveReminder() {
+            const type = document.getElementById('reminderType').value;
+            const time = document.getElementById('reminderTime').value;
+            const frequency = document.getElementById('reminderFrequency').value;
+            
+            let text = '';
+            if (type === 'custom') {
+                text = document.getElementById('customReminderText').value.trim();
+                if (!text) {
+                    alert('Please enter a reminder message! 💕');
+                    return;
+                }
+            } else {
+                const reminderTexts = {
+                    period: 'Your period might start soon',
+                    ovulation: 'You might be ovulating today',
+                    medication: 'Time to take your medication',
+                    symptom: 'Log your symptoms today',
+                    water: 'Remember to drink water',
+                    exercise: 'Time for some movement',
+                    selfcare: 'Take some time for self-care'
+                };
+                text = reminderTexts[type];
+            }
+            
+            if (!time) {
+                alert('Please select a time! 💕');
+                return;
+            }
+            
+            if (!userData.reminders) userData.reminders = [];
+            
+            const reminder = {
+                id: Date.now(),
+                type: type,
+                text: text,
+                time: time,
+                frequency: frequency,
+                active: true
+            };
+            
+            userData.reminders.push(reminder);
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            closeAddReminder();
+            loadReminders();
+            alert('Reminder added! 💕');
+        }
+        
+        function loadSmartSuggestions() {
+            const container = document.getElementById('smartSuggestions');
+            const suggestions = [];
+            
+            // Calculate current cycle day
+            if (userData && userData.lastPeriodStart) {
+                const lastPeriod = new Date(userData.lastPeriodStart);
+                const today = new Date();
+                const daysDiff = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+                const currentCycleDay = (daysDiff % 28) + 1;
+                
+                // Phase-based suggestions
+                if (currentCycleDay >= 1 && currentCycleDay <= 5) {
+                    suggestions.push({
+                        icon: 'heart',
+                        color: 'pink',
+                        text: 'Your period is here. Remember to rest and stay hydrated.',
+                        action: 'Log your flow today'
+                    });
+                } else if (currentCycleDay >= 12 && currentCycleDay <= 16) {
+                    suggestions.push({
+                        icon: 'star',
+                        color: 'teal',
+                        text: 'You\'re in your fertile window. This is your peak energy time!',
+                        action: 'Track ovulation symptoms'
+                    });
+                } else if (currentCycleDay >= 23) {
+                    suggestions.push({
+                        icon: 'moon',
+                        color: 'purple',
+                        text: 'PMS might be coming. Practice extra self-care.',
+                        action: 'Log PMS symptoms'
+                    });
+                }
+            }
+            
+            // General wellness suggestions
+            suggestions.push({
+                icon: 'tint',
+                color: 'blue',
+                text: 'Stay hydrated! Aim for 8 glasses of water today.',
+                action: 'Set water reminder'
+            });
+            
+            if (suggestions.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-600 text-center">No suggestions right now. Keep tracking! 💕</p>';
+                return;
+            }
+            
+            container.innerHTML = suggestions.map(s => `
+                <div class="bg-gradient-to-r from-${s.color}-50 to-${s.color}-100 rounded-2xl p-4">
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 rounded-full bg-${s.color}-400 flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-${s.icon} text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-800 mb-2">${s.text}</p>
+                            <button class="text-xs font-semibold text-${s.color}-600 hover:underline">${s.action} →</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadReminders() {
+            const container = document.getElementById('remindersList');
+            
+            if (!userData.reminders || userData.reminders.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-600 text-center">No reminders yet. Add one to get started! 💕</p>';
+                return;
+            }
+            
+            const reminderIcons = {
+                period: 'tint',
+                ovulation: 'star',
+                medication: 'pills',
+                symptom: 'clipboard-list',
+                water: 'glass-water',
+                exercise: 'running',
+                selfcare: 'spa',
+                custom: 'bell'
+            };
+            
+            container.innerHTML = userData.reminders.filter(r => r.active).map(reminder => `
+                <div class="bg-white rounded-2xl p-4 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center flex-1">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-luna-pink to-luna-purple flex items-center justify-center mr-3">
+                                <i class="fas fa-${reminderIcons[reminder.type] || 'bell'} text-white"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-800 text-sm">${reminder.text}</p>
+                                <p class="text-xs text-gray-600 mt-1">
+                                    <i class="fas fa-clock mr-1"></i>${reminder.time} • ${reminder.frequency}
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="deleteReminder(${reminder.id})" class="text-gray-400 hover:text-red-500 transition ml-2">
+                            <i class="fas fa-trash text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function deleteReminder(id) {
+            if (confirm('Delete this reminder?')) {
+                userData.reminders = userData.reminders.filter(r => r.id !== id);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                loadReminders();
             }
         }
     </script>
