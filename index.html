@@ -149,6 +149,18 @@
             border-color: #e91e63;
             color: white;
         }
+        
+        .severity-btn.selected {
+            background: linear-gradient(135deg, #e91e63 0%, #ec407a 100%);
+            border-color: #e91e63;
+            color: white;
+        }
+        
+        .mode-switch-btn.selected {
+            background: linear-gradient(135deg, #e91e63 0%, #ec407a 100%);
+            border-color: #e91e63;
+            color: white;
+        }
     </style>
     
     <script>
@@ -324,8 +336,29 @@
             </div>
         </header>
         
-        <!-- Circular Cycle Tracker -->
-        <div class="mx-4 mb-6">
+        <!-- Mode Selection Display -->
+        <div class="mx-4 mb-6" id="modeSelector">
+            <div class="glass-card rounded-3xl p-6">
+                <h3 class="font-semibold text-gray-700 mb-3 text-center">Mode:</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="switchMode(&#39;period&#39;)" class="mode-switch-btn p-3 rounded-2xl bg-white border-2 border-pink-200 hover:bg-pink-50 transition text-sm font-semibold" data-mode="period">
+                        <i class="fas fa-calendar-alt text-luna-pink mr-2"></i>Period
+                    </button>
+                    <button onclick="switchMode(&#39;conceive&#39;)" class="mode-switch-btn p-3 rounded-2xl bg-white border-2 border-pink-200 hover:bg-pink-50 transition text-sm font-semibold" data-mode="conceive">
+                        <i class="fas fa-baby text-luna-purple mr-2"></i>Conceive
+                    </button>
+                    <button onclick="switchMode(&#39;pregnancy&#39;)" class="mode-switch-btn p-3 rounded-2xl bg-white border-2 border-pink-200 hover:bg-pink-50 transition text-sm font-semibold" data-mode="pregnancy">
+                        <i class="fas fa-heart text-pink-400 mr-2"></i>Pregnancy
+                    </button>
+                    <button onclick="switchMode(&#39;perimenopause&#39;)" class="mode-switch-btn p-3 rounded-2xl bg-white border-2 border-pink-200 hover:bg-pink-50 transition text-sm font-semibold" data-mode="perimenopause">
+                        <i class="fas fa-leaf text-purple-400 mr-2"></i>Perimenopause
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Circular Cycle Tracker (Period Mode) -->
+        <div class="mx-4 mb-6" id="periodTracker">
             <div class="glass-card rounded-3xl p-8">
                 <div class="flex justify-center mb-6">
                     <div class="cycle-circle">
@@ -428,26 +461,64 @@
             </div>
         </div>
         
+        <!-- Pregnancy Tracker -->
+        <div class="mx-4 mb-6 hidden" id="pregnancyTracker">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="text-center mb-6">
+                    <div class="text-6xl mb-4">🤰</div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-2" id="pregnancyWeek">Week 0</h2>
+                    <p class="text-gray-600 mb-4" id="pregnancyDueDate">Due date: calculating...</p>
+                    <div class="bg-pink-50 rounded-2xl p-4">
+                        <p class="text-sm font-semibold text-gray-800 mb-2" id="babySize">Baby is growing!</p>
+                        <p class="text-xs text-gray-600" id="babyDevelopment">Track your pregnancy journey</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Conceive Tracker -->
+        <div class="mx-4 mb-6 hidden" id="conceiveTracker">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="text-center mb-6">
+                    <div class="text-6xl mb-4">💕</div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Fertility Tracking</h2>
+                    <p class="text-gray-600 mb-4" id="fertilityStatus">Calculating fertile window...</p>
+                    <div class="bg-gradient-to-r from-teal-50 to-blue-50 rounded-2xl p-4">
+                        <p class="text-sm font-semibold text-gray-800 mb-2" id="ovulationDay">Ovulation prediction</p>
+                        <p class="text-xs text-gray-600">Track intimacy, ovulation tests, and BBT for best results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Perimenopause Tracker -->
+        <div class="mx-4 mb-6 hidden" id="perimenopauseTracker">
+            <div class="glass-card rounded-3xl p-8">
+                <div class="text-center mb-6">
+                    <div class="text-6xl mb-4">🌿</div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Perimenopause Journey</h2>
+                    <p class="text-gray-600 mb-4">Your body is transitioning</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-purple-50 rounded-xl p-3">
+                            <p class="text-xs text-gray-600 mb-1">Hot Flashes</p>
+                            <p class="text-lg font-bold text-purple-600" id="hotFlashCount">0 today</p>
+                        </div>
+                        <div class="bg-pink-50 rounded-xl p-3">
+                            <p class="text-xs text-gray-600 mb-1">Sleep Quality</p>
+                            <p class="text-lg font-bold text-pink-600" id="sleepQuality">Not tracked</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Quick Actions -->
         <div class="mx-4 mb-6">
             <div class="glass-card rounded-3xl p-6">
                 <h3 class="font-semibold text-gray-800 mb-4">Quick Log</h3>
                 
-                <div class="grid grid-cols-3 gap-3">
-                    <button onclick="logPeriod()" class="p-4 rounded-2xl bg-gradient-to-br from-pink-100 to-pink-200 hover:shadow-lg transition">
-                        <i class="fas fa-tint text-luna-pink text-2xl mb-2"></i>
-                        <p class="text-xs font-semibold text-gray-700">Period</p>
-                    </button>
-                    
-                    <button onclick="logSymptom()" class="p-4 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 hover:shadow-lg transition">
-                        <i class="fas fa-bolt text-luna-purple text-2xl mb-2"></i>
-                        <p class="text-xs font-semibold text-gray-700">Symptoms</p>
-                    </button>
-                    
-                    <button onclick="logMood()" class="p-4 rounded-2xl bg-gradient-to-br from-yellow-100 to-yellow-200 hover:shadow-lg transition">
-                        <i class="fas fa-smile text-yellow-600 text-2xl mb-2"></i>
-                        <p class="text-xs font-semibold text-gray-700">Mood</p>
-                    </button>
+                <div id="quickActionsGrid" class="grid grid-cols-3 gap-3">
+                    <!-- Will be populated based on mode -->
                 </div>
             </div>
         </div>
@@ -614,6 +685,46 @@
                 </h3>
                 <div id="remindersList" class="space-y-3">
                     <!-- Will be populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Symptom Detail Modal -->
+    <div id="symptomDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="symptomDetailTitle" class="text-2xl font-bold text-gray-800">Symptom Tracking</h2>
+                <button onclick="closeSymptomDetail()" class="text-gray-600 hover:text-luna-pink text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">How severe is it?</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="selectSeverity(this, &#39;mild&#39;)" data-severity="mild" class="severity-btn p-3 rounded-xl bg-white border-2 border-green-200 hover:bg-green-50 transition text-sm font-semibold">Mild</button>
+                        <button onclick="selectSeverity(this, &#39;moderate&#39;)" data-severity="moderate" class="severity-btn p-3 rounded-xl bg-white border-2 border-yellow-200 hover:bg-yellow-50 transition text-sm font-semibold">Moderate</button>
+                        <button onclick="selectSeverity(this, &#39;severe&#39;)" data-severity="severe" class="severity-btn p-3 rounded-xl bg-white border-2 border-orange-200 hover:bg-orange-50 transition text-sm font-semibold">Severe</button>
+                        <button onclick="selectSeverity(this, &#39;extreme&#39;)" data-severity="extreme" class="severity-btn p-3 rounded-xl bg-white border-2 border-red-200 hover:bg-red-50 transition text-sm font-semibold">Extreme</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Additional notes (optional)</label>
+                    <textarea id="symptomNotes" rows="3" class="input-field w-full p-3 rounded-xl border-2 border-pink-200 focus:border-luna-pink focus:outline-none resize-none text-sm" placeholder="Any additional details..."></textarea>
+                </div>
+                
+                <button onclick="logSymptomDetail()" class="w-full bg-gradient-to-r from-luna-pink to-luna-purple text-white py-3 rounded-2xl font-bold hover:shadow-xl transition">
+                    Log Symptom <i class="fas fa-check ml-2"></i>
+                </button>
+                
+                <div class="border-t-2 border-pink-100 pt-4 mt-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">Recent History</h3>
+                    <div id="symptomHistory" class="space-y-2">
+                        <!-- Will be populated by JS -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1040,10 +1151,221 @@
             // Load user data
             if (userData) {
                 document.getElementById('displayName').textContent = userData.name;
+                updateModeDisplay();
                 updateCycleInfo();
                 renderMiniCalendar();
                 drawHormoneChart();
+                updateQuickActions();
             }
+        }
+        
+        function switchMode(mode) {
+            selectedMode = mode;
+            localStorage.setItem('selectedMode', mode);
+            updateModeDisplay();
+            updateCycleInfo();
+            updateQuickActions();
+            loadSmartSuggestions();
+        }
+        
+        function updateModeDisplay() {
+            // Update mode selector buttons
+            document.querySelectorAll('.mode-switch-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.dataset.mode === selectedMode) {
+                    btn.classList.add('selected');
+                }
+            });
+            
+            // Hide all trackers
+            document.getElementById('periodTracker').classList.add('hidden');
+            document.getElementById('pregnancyTracker').classList.add('hidden');
+            document.getElementById('conceiveTracker').classList.add('hidden');
+            document.getElementById('perimenopauseTracker').classList.add('hidden');
+            
+            // Show appropriate tracker
+            if (selectedMode === 'period') {
+                document.getElementById('periodTracker').classList.remove('hidden');
+            } else if (selectedMode === 'pregnancy') {
+                document.getElementById('pregnancyTracker').classList.remove('hidden');
+                updatePregnancyInfo();
+            } else if (selectedMode === 'conceive') {
+                document.getElementById('conceiveTracker').classList.remove('hidden');
+                updateConceiveInfo();
+            } else if (selectedMode === 'perimenopause') {
+                document.getElementById('perimenopauseTracker').classList.remove('hidden');
+                updatePerimenopauseInfo();
+            }
+        }
+        
+        function updatePregnancyInfo() {
+            const weeks = getPregnancyWeek();
+            document.getElementById('pregnancyWeek').textContent = `Week ${weeks}`;
+            
+            // Calculate due date
+            if (userData.pregnancyStart || userData.lastPeriodStart) {
+                const start = new Date(userData.pregnancyStart || userData.lastPeriodStart);
+                const dueDate = new Date(start);
+                dueDate.setDate(dueDate.getDate() + 280); // 40 weeks
+                document.getElementById('pregnancyDueDate').textContent = `Due date: ${dueDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+            }
+            
+            // Baby size comparisons
+            const babySizes = [
+                { week: 4, size: 'Poppy seed', dev: 'Your baby is just implanting!' },
+                { week: 8, size: 'Raspberry', dev: 'Baby\'s heart is beating!' },
+                { week: 12, size: 'Lime', dev: 'All organs are forming' },
+                { week: 16, size: 'Avocado', dev: 'Baby can hear your voice' },
+                { week: 20, size: 'Banana', dev: 'Halfway there! Baby is very active' },
+                { week: 24, size: 'Corn', dev: 'Baby\'s lungs are developing' },
+                { week: 28, size: 'Eggplant', dev: 'Baby can open their eyes' },
+                { week: 32, size: 'Squash', dev: 'Baby is practicing breathing' },
+                { week: 36, size: 'Pineapple', dev: 'Almost ready to meet you!' },
+                { week: 40, size: 'Watermelon', dev: 'Baby is full-term and ready!' }
+            ];
+            
+            const currentSize = babySizes.reverse().find(s => weeks >= s.week) || babySizes[babySizes.length - 1];
+            document.getElementById('babySize').textContent = `Baby is the size of a ${currentSize.size}`;
+            document.getElementById('babyDevelopment').textContent = currentSize.dev;
+        }
+        
+        function updateConceiveInfo() {
+            if (!userData.lastPeriodStart) return;
+            
+            const lastPeriod = new Date(userData.lastPeriodStart);
+            const today = new Date();
+            const daysDiff = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+            const cycleDay = (daysDiff % 28) + 1;
+            
+            // Fertile window is typically days 10-17
+            if (cycleDay >= 10 && cycleDay <= 17) {
+                document.getElementById('fertilityStatus').textContent = '🌟 You\'re in your fertile window!';
+                document.getElementById('fertilityStatus').className = 'text-teal-600 font-semibold mb-4';
+                
+                if (cycleDay >= 13 && cycleDay <= 15) {
+                    document.getElementById('ovulationDay').textContent = 'Peak fertility - ovulation likely today!';
+                } else if (cycleDay < 13) {
+                    document.getElementById('ovulationDay').textContent = `Ovulation expected in ${14 - cycleDay} day(s)`;
+                } else {
+                    document.getElementById('ovulationDay').textContent = 'Ovulation likely occurred recently';
+                }
+            } else {
+                document.getElementById('fertilityStatus').textContent = 'Not in fertile window';
+                document.getElementById('fertilityStatus').className = 'text-gray-600 mb-4';
+                
+                const daysUntilFertile = cycleDay < 10 ? 10 - cycleDay : 28 - cycleDay + 10;
+                document.getElementById('ovulationDay').textContent = `Fertile window starts in ${daysUntilFertile} day(s)`;
+            }
+        }
+        
+        function updatePerimenopauseInfo() {
+            // Count hot flashes today
+            const today = new Date().toDateString();
+            let todayCount = 0;
+            if (userData.hotFlashes) {
+                todayCount = userData.hotFlashes.filter(hf => new Date(hf.date).toDateString() === today).length;
+            }
+            document.getElementById('hotFlashCount').textContent = `${todayCount} today`;
+            
+            // Sleep quality (from last logged mood/symptom)
+            document.getElementById('sleepQuality').textContent = 'Not tracked';
+            if (userData.symptomTracking && userData.symptomTracking.sleep && userData.symptomTracking.sleep.length > 0) {
+                const lastSleep = userData.symptomTracking.sleep[userData.symptomTracking.sleep.length - 1];
+                const severity = lastSleep.severity;
+                const qualities = { mild: 'Good', moderate: 'Fair', severe: 'Poor', extreme: 'Very Poor' };
+                document.getElementById('sleepQuality').textContent = qualities[severity] || 'Not tracked';
+            }
+        }
+        
+        function updateQuickActions() {
+            const container = document.getElementById('quickActionsGrid');
+            let actions = [];
+            
+            if (selectedMode === 'period') {
+                actions = [
+                    { icon: 'tint', color: 'pink', label: 'Period', onclick: 'logPeriod()' },
+                    { icon: 'bolt', color: 'purple', label: 'Symptoms', onclick: 'logSymptom()' },
+                    { icon: 'smile', color: 'yellow', label: 'Mood', onclick: 'logMood()' }
+                ];
+            } else if (selectedMode === 'pregnancy') {
+                actions = [
+                    { icon: 'notes-medical', color: 'pink', label: 'Symptoms', onclick: 'logSymptom()' },
+                    { icon: 'weight', color: 'purple', label: 'Weight', onclick: 'logWeight()' },
+                    { icon: 'heartbeat', color: 'red', label: 'Kick Count', onclick: 'logKickCount()' }
+                ];
+            } else if (selectedMode === 'conceive') {
+                actions = [
+                    { icon: 'heart', color: 'pink', label: 'Intimacy', onclick: 'logIntimacy()' },
+                    { icon: 'vial', color: 'teal', label: 'OPK Test', onclick: 'logOPK()' },
+                    { icon: 'temperature-high', color: 'orange', label: 'BBT', onclick: 'logBBT()' }
+                ];
+            } else if (selectedMode === 'perimenopause') {
+                actions = [
+                    { icon: 'fire', color: 'red', label: 'Hot Flash', onclick: 'logHotFlash()' },
+                    { icon: 'moon', color: 'purple', label: 'Sleep', onclick: 'logSleep()' },
+                    { icon: 'smile', color: 'yellow', label: 'Mood', onclick: 'logMood()' }
+                ];
+            }
+            
+            container.innerHTML = actions.map(a => `
+                <button onclick="${a.onclick}" class="p-4 rounded-2xl bg-gradient-to-br from-${a.color}-100 to-${a.color}-200 hover:shadow-lg transition">
+                    <i class="fas fa-${a.icon} text-${a.color === 'yellow' ? 'yellow-600' : a.color === 'purple' ? 'luna-purple' : a.color === 'pink' ? 'luna-pink' : a.color === 'red' ? 'red-500' : a.color === 'teal' ? 'teal-600' : a.color === 'orange' ? 'orange-600' : 'gray-600'} text-2xl mb-2"></i>
+                    <p class="text-xs font-semibold text-gray-700">${a.label}</p>
+                </button>
+            `).join('');
+        }
+        
+        function logWeight() {
+            const weight = prompt('Enter your current weight (kg):');
+            if (weight && !isNaN(weight)) {
+                if (!userData.weightLog) userData.weightLog = [];
+                userData.weightLog.push({
+                    date: new Date().toISOString(),
+                    weight: parseFloat(weight)
+                });
+                localStorage.setItem('userData', JSON.stringify(userData));
+                alert('Weight logged! 💕');
+            }
+        }
+        
+        function logKickCount() {
+            const kicks = prompt('How many kicks in the last hour?');
+            if (kicks && !isNaN(kicks)) {
+                if (!userData.kickCount) userData.kickCount = [];
+                userData.kickCount.push({
+                    date: new Date().toISOString(),
+                    count: parseInt(kicks)
+                });
+                localStorage.setItem('userData', JSON.stringify(userData));
+                alert('Kick count logged! 💕');
+            }
+        }
+        
+        function logIntimacy() {
+            if (!userData.intimacyLog) userData.intimacyLog = [];
+            userData.intimacyLog.push({
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('userData', JSON.stringify(userData));
+            alert('Logged! 💕');
+        }
+        
+        function logOPK() {
+            const result = confirm('Was the ovulation test positive?');
+            if (!userData.opkTests) userData.opkTests = [];
+            userData.opkTests.push({
+                date: new Date().toISOString(),
+                positive: result
+            });
+            localStorage.setItem('userData', JSON.stringify(userData));
+            alert(`OPK test logged as ${result ? 'positive' : 'negative'}! 💕`);
+        }
+        
+        function logSleep() {
+            currentSymptom = 'sleep';
+            document.getElementById('symptomDetailModal').classList.remove('hidden');
+            document.getElementById('symptomDetailTitle').textContent = 'Sleep Quality';
+            loadSymptomHistory('sleep');
         }
         
         // Calculate cycle info
@@ -1470,7 +1792,9 @@
             
             container.innerHTML = userData.diaryEntries.map(entry => {
                 const date = new Date(entry.date);
-                const moodEmojis = {
+                let currentSymptom = null;
+            
+            const moodEmojis = {
                     amazing: '😍',
                     happy: '😊',
                     neutral: '😐',
@@ -1610,7 +1934,74 @@
         }
         
         function showSymptomDetail(symptom) {
-            alert(`Viewing details for: ${symptom}\nDetailed tracking coming soon! 💕`);
+            currentSymptom = symptom;
+            document.getElementById('symptomDetailModal').classList.remove('hidden');
+            document.getElementById('symptomDetailTitle').textContent = symptom.charAt(0).toUpperCase() + symptom.slice(1);
+            loadSymptomHistory(symptom);
+        }
+        
+        function closeSymptomDetail() {
+            document.getElementById('symptomDetailModal').classList.add('hidden');
+        }
+        
+        function logSymptomDetail() {
+            const severity = document.querySelector('.severity-btn.selected')?.dataset.severity;
+            const notes = document.getElementById('symptomNotes').value.trim();
+            
+            if (!severity) {
+                alert('Please select severity level! 💕');
+                return;
+            }
+            
+            if (!userData.symptomTracking) userData.symptomTracking = {};
+            if (!userData.symptomTracking[currentSymptom]) userData.symptomTracking[currentSymptom] = [];
+            
+            userData.symptomTracking[currentSymptom].push({
+                date: new Date().toISOString(),
+                severity: severity,
+                notes: notes
+            });
+            
+            localStorage.setItem('userData', JSON.stringify(userData));
+            loadSymptomHistory(currentSymptom);
+            document.getElementById('symptomNotes').value = '';
+            document.querySelectorAll('.severity-btn').forEach(btn => btn.classList.remove('selected'));
+            alert(`${currentSymptom} logged! 💕`);
+        }
+        
+        function loadSymptomHistory(symptom) {
+            const container = document.getElementById('symptomHistory');
+            
+            if (!userData.symptomTracking || !userData.symptomTracking[symptom] || userData.symptomTracking[symptom].length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-600 text-center py-4">No history yet. Start tracking! 💕</p>';
+                return;
+            }
+            
+            const severityColors = {
+                mild: 'green',
+                moderate: 'yellow',
+                severe: 'orange',
+                extreme: 'red'
+            };
+            
+            container.innerHTML = userData.symptomTracking[symptom].slice(-5).reverse().map(entry => {
+                const date = new Date(entry.date);
+                const color = severityColors[entry.severity];
+                return `
+                    <div class="bg-${color}-50 rounded-xl p-3 border-l-4 border-${color}-400">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-semibold text-gray-700">${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-${color}-200 text-${color}-800">${entry.severity}</span>
+                        </div>
+                        ${entry.notes ? `<p class="text-xs text-gray-600 mt-1">${entry.notes}</p>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function selectSeverity(element, severity) {
+            document.querySelectorAll('.severity-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
         }
         
         function clearData() {
@@ -1729,36 +2120,95 @@
             const container = document.getElementById('smartSuggestions');
             const suggestions = [];
             
-            // Calculate current cycle day
-            if (userData && userData.lastPeriodStart) {
-                const lastPeriod = new Date(userData.lastPeriodStart);
-                const today = new Date();
-                const daysDiff = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
-                const currentCycleDay = (daysDiff % 28) + 1;
-                
-                // Phase-based suggestions
-                if (currentCycleDay >= 1 && currentCycleDay <= 5) {
-                    suggestions.push({
-                        icon: 'heart',
-                        color: 'pink',
-                        text: 'Your period is here. Remember to rest and stay hydrated.',
-                        action: 'Log your flow today'
-                    });
-                } else if (currentCycleDay >= 12 && currentCycleDay <= 16) {
-                    suggestions.push({
-                        icon: 'star',
-                        color: 'teal',
-                        text: 'You\'re in your fertile window. This is your peak energy time!',
-                        action: 'Track ovulation symptoms'
-                    });
-                } else if (currentCycleDay >= 23) {
-                    suggestions.push({
-                        icon: 'moon',
-                        color: 'purple',
-                        text: 'PMS might be coming. Practice extra self-care.',
-                        action: 'Log PMS symptoms'
-                    });
+            // Mode-specific suggestions
+            if (selectedMode === 'period') {
+                // Calculate current cycle day
+                if (userData && userData.lastPeriodStart) {
+                    const lastPeriod = new Date(userData.lastPeriodStart);
+                    const today = new Date();
+                    const daysDiff = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+                    const currentCycleDay = (daysDiff % 28) + 1;
+                    
+                    // Phase-based suggestions
+                    if (currentCycleDay >= 1 && currentCycleDay <= 5) {
+                        suggestions.push({
+                            icon: 'heart',
+                            color: 'pink',
+                            text: 'Your period is here. Remember to rest and stay hydrated.',
+                            action: 'Log your flow today',
+                            onclick: 'logPeriod()'
+                        });
+                    } else if (currentCycleDay >= 12 && currentCycleDay <= 16) {
+                        suggestions.push({
+                            icon: 'star',
+                            color: 'teal',
+                            text: 'You\'re in your fertile window. This is your peak energy time!',
+                            action: 'Track ovulation symptoms',
+                            onclick: 'logSymptom()'
+                        });
+                    } else if (currentCycleDay >= 23) {
+                        suggestions.push({
+                            icon: 'moon',
+                            color: 'purple',
+                            text: 'PMS might be coming. Practice extra self-care.',
+                            action: 'Log PMS symptoms',
+                            onclick: 'logSymptom()'
+                        });
+                    }
                 }
+            } else if (selectedMode === 'pregnancy') {
+                const weeks = getPregnancyWeek();
+                suggestions.push({
+                    icon: 'baby',
+                    color: 'pink',
+                    text: `You're ${weeks} weeks pregnant! Baby is growing beautifully.`,
+                    action: 'View weekly development',
+                    onclick: 'showSection("home")'
+                });
+                suggestions.push({
+                    icon: 'apple-alt',
+                    color: 'green',
+                    text: 'Don\'t forget your prenatal vitamins and stay nourished.',
+                    action: 'Log nutrition',
+                    onclick: 'logSymptom()'
+                });
+            } else if (selectedMode === 'conceive') {
+                if (userData && userData.lastPeriodStart) {
+                    const daysDiff = Math.floor((new Date() - new Date(userData.lastPeriodStart)) / (1000 * 60 * 60 * 24));
+                    const cycleDay = (daysDiff % 28) + 1;
+                    
+                    if (cycleDay >= 10 && cycleDay <= 17) {
+                        suggestions.push({
+                            icon: 'heart',
+                            color: 'teal',
+                            text: 'You\'re in your fertile window! This is the best time to conceive.',
+                            action: 'Track ovulation',
+                            onclick: 'logOvulation()'
+                        });
+                    }
+                }
+                suggestions.push({
+                    icon: 'temperature-high',
+                    color: 'orange',
+                    text: 'Track your basal body temperature for better fertility insights.',
+                    action: 'Log BBT',
+                    onclick: 'logBBT()'
+                });
+            } else if (selectedMode === 'perimenopause') {
+                suggestions.push({
+                    icon: 'fire',
+                    color: 'red',
+                    text: 'Track hot flashes and night sweats to identify patterns.',
+                    action: 'Log hot flash',
+                    onclick: 'logHotFlash()'
+                });
+                suggestions.push({
+                    icon: 'moon',
+                    color: 'purple',
+                    text: 'Getting quality sleep is important. Track your sleep patterns.',
+                    action: 'Log sleep quality',
+                    onclick: 'logSymptom()'
+                });
             }
             
             // General wellness suggestions
@@ -1766,7 +2216,8 @@
                 icon: 'tint',
                 color: 'blue',
                 text: 'Stay hydrated! Aim for 8 glasses of water today.',
-                action: 'Set water reminder'
+                action: 'Set water reminder',
+                onclick: 'createWaterReminder()'
             });
             
             if (suggestions.length === 0) {
@@ -1782,11 +2233,76 @@
                         </div>
                         <div class="flex-1">
                             <p class="text-sm text-gray-800 mb-2">${s.text}</p>
-                            <button class="text-xs font-semibold text-${s.color}-600 hover:underline">${s.action} →</button>
+                            <button onclick="${s.onclick}" class="text-xs font-semibold text-${s.color}-600 hover:underline">${s.action} →</button>
                         </div>
                     </div>
                 </div>
             `).join('');
+        }
+        
+        function createWaterReminder() {
+            if (!userData.reminders) userData.reminders = [];
+            
+            const reminder = {
+                id: Date.now(),
+                type: 'water',
+                text: 'Remember to drink water',
+                time: '09:00',
+                frequency: 'daily',
+                active: true
+            };
+            
+            userData.reminders.push(reminder);
+            localStorage.setItem('userData', JSON.stringify(userData));
+            alert('Water reminder created! 💕');
+            loadReminders();
+        }
+        
+        function logOvulation() {
+            if (!userData.ovulationLog) userData.ovulationLog = [];
+            userData.ovulationLog.push({
+                date: new Date().toISOString(),
+                symptoms: []
+            });
+            localStorage.setItem('userData', JSON.stringify(userData));
+            alert('Ovulation day logged! 💕');
+        }
+        
+        function logBBT() {
+            const temp = prompt('Enter your basal body temperature (°C):');
+            if (temp && !isNaN(temp)) {
+                if (!userData.bbtLog) userData.bbtLog = [];
+                userData.bbtLog.push({
+                    date: new Date().toISOString(),
+                    temperature: parseFloat(temp)
+                });
+                localStorage.setItem('userData', JSON.stringify(userData));
+                alert('Temperature logged! 💕');
+            }
+        }
+        
+        function logHotFlash() {
+            if (!userData.hotFlashes) userData.hotFlashes = [];
+            const severity = prompt('Rate severity (1-5):');
+            if (severity && severity >= 1 && severity <= 5) {
+                userData.hotFlashes.push({
+                    date: new Date().toISOString(),
+                    severity: parseInt(severity)
+                });
+                localStorage.setItem('userData', JSON.stringify(userData));
+                alert('Hot flash logged! 💕');
+            }
+        }
+        
+        function getPregnancyWeek() {
+            if (!userData.pregnancyStart) {
+                // Use last period as default
+                userData.pregnancyStart = userData.lastPeriodStart;
+            }
+            const start = new Date(userData.pregnancyStart);
+            const today = new Date();
+            const weeks = Math.floor((today - start) / (1000 * 60 * 60 * 24 * 7));
+            return Math.min(weeks, 40);
         }
         
         function loadReminders() {
